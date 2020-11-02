@@ -21,7 +21,7 @@ void sort() {
 }
 
 void spojPodstromy() {
-	// tuto cast za chvyli doplnim 
+	// v poli vrcholu prepiseme hodnotu koncoveho bodu za pocatecni 
 }
 
 void KruskalAlgorithm () {
@@ -45,17 +45,21 @@ void KruskalAlgorithm () {
 	// sortujeme hrany podle jejich vahy
 	sort();
 
+	// Definujeme pole znaku pro vrcholy
+	char vrcholy[MAX];
+	// Definujeme pomocne promenne
+	char hodnota1, hodnota2;
 
-	//za chvyli tuto cast doplnim 
+	// Nastavime hodnotu poctu hran vysledneho stromu na 0
+	vysledek.pocet = 0;
 
-		// Definujeme pole znaku pro vrcholy
-		//char vrcholy[MAX];
-		// Definujeme pomocne promenne
-		//char hodnota1, hodnota2;
-
-		// Nastavime hodnotu poctu hran vysledneho stromu na 0
-		//vysledek.pocet = 0;
-	//
+	// TODO 
+	// Protoze mame ve vyslednem strome mit pocet hran o jednu min nez pocet vrcholu 
+	// tak do pomocnych promennych hodime hodnoty pocatecniho a koncoveho bodu prvni hrany v sortu 
+	// porovname hodnoty 
+	// pokud jsou stejne tak hranu zahodime
+	// pokud ne tak danou hranu zaradime do vysledneho stromu a spojime podstromy 
+	
 }
 
 void printResult () {
