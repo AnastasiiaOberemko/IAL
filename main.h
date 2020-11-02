@@ -25,4 +25,4 @@ void readMatrix();
 void sort();
 void KruskalAlgorithm();
 void printResult();
-void spojPodsromy();
+void spojPodsromy(char vrcholy[], int val1, int val2);

@@ -20,7 +20,7 @@ void sort() {
 	// pruchod seznamem a porovnani vahy sousedu -> quick sort 
 }
 
-void spojPodstromy() {
+void spojPodstromy(char vrcholy[], int val1, int val2) {
 	// v poli vrcholu prepiseme hodnotu koncoveho bodu za pocatecni 
 }
 
