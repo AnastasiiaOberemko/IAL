@@ -4,18 +4,19 @@
 // int source - promenna pro pocatecni bod hrany
 // int dest - promenna pro koncovy bod hrany
 // int weight - promenna pro vahu hrany
-struct Hrana {
-	int source, dest, weigth;
+typedef struct Hrana {
+	int source, dest, weight;
 } hrana;
 
 // Definujeme struktury seznam a vysledek typu SeznamHran
 // Struktura se sklada z poctu hran a pole informace o hranach
 // Seznam - mnozina obsahujici vsechny hrany grafu
 // Vysledek - mnozina stromu, kde kazdy uzel je samostatnym podstromem
-struct SeznamHran {
+typedef struct SeznamHran {
 	hrana info[MAX];
 	int pocet;
-} seznam, vysledek;
+};
+struct SeznamHran seznam, vysledek;
 
 // Definujme dvojrozmerne pole Graf pro nasi matici a promennu int pocet pro pocet vrcholu
 char Graf[MAX][MAX];

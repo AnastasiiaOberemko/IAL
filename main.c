@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <main.h>
+#include "main.h"
 
 
 // Funkce na nacteni matrice ze vstupu
@@ -35,7 +35,7 @@ void KruskalAlgorithm () {
 			// Protoze chceme vahu hrany jako cislo a ne znak, pouzijeme funkci atoi() coz prevede string do integeru
 			if (atoi(Graf[i][j]) != 0) {
 				seznam.info[seznam.pocet].source = i;
-				seznam.info[seznam.pocet].destination = j;
+				seznam.info[seznam.pocet].dest = j;
 				seznam.info[seznam.pocet].weight = atoi(Graf[i][j]);
 				seznam.pocet++;
 			}
