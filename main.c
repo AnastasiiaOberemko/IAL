@@ -4,14 +4,51 @@
 #include "main.h"
 
 
-// Funkce na nacteni matrice ze vstupu
+/**
+* Funkce readMatrix naèítá graf, ze zadaného souboru.
+* Soubor je vybrán podle zadaného názvu (i s koncovkou) a jsou hledány v složce `input/`. 
+* Dokáže otevøít .csv i .txt soubory. Jednotlivé položky jsou oddìleny ',' 
+* a jednotlivé øádky jsou denoduše oddìleny '\n' tedy enterem vtext editoru.
+* 
+* Matice ze soubory je naètena do dvourozmìrného pole `Graf[MAX][MAX]`,
+* kde za pomocí matice sousednosti (adjacency matrix) bude nadále interpretována jako Graf.
+* Jednotlivé hodnoty jsou typu Integer.
+*/
 void readMatrix () {
 	// TODO - v dokumentace bychom meli pridat nejaky koncovy automat na zpracovani vstupu
 	// Vstupni vrcholy muzou byt bud ocislovane, bud pojmenovane a to male nebo velka pismenka
 	// asi bych tady jeste pridala neco jako "nebo zadejte -h nebo -help pro vice info" a dat ukazkovy vstup
-	printf("Zadejte graf pomoci matice souvislosti: \n");
-	// TODO
-	// ze vstupu dostavame matice jako string a musime ji nacist do dvojrozmerneho pole Graf[][]
+
+	char buffer[MAX];
+	char* record, *line;
+	char file_name[20];
+	char path[32];
+
+	printf("Zadej nazev souboru: \n");
+	scanf("%s", file_name);
+	strcpy(path, "input/");
+	strcat(path, file_name);
+
+	FILE* in = fopen(path, "r");				//Otevøe soubor, jinak ukonèí program s 1.
+	if (in == NULL)
+	{
+		perror("\n file opening failed");
+		exit(1);
+	}
+
+	printf("\n\nNactena matice:\n\n");
+	for (int i = 0; (line = fgets(buffer, sizeof(buffer), in)) != NULL; i++)
+	{
+		record = strtok(line, ",");
+		for (int j = 0; record != NULL; j++)
+		{
+			Graf[i][j] = atoi(record);			//Nahraje danou položku jako Integer.
+			record = strtok(NULL, ",");
+			printf("%d \t", Graf[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n\n");
 }
 
 
@@ -70,8 +107,8 @@ void printResult () {
 
 int main() {
 
-	printf("Zadejte pocet vrcholu: ");
-	scanf("%d", &pocet);
+	//printf("Zadejte pocet vrcholu: ");
+	//scanf("%d", &pocet);
 
 	readMatrix();
 
