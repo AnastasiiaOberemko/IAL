@@ -18,7 +18,7 @@ Jelikož je 2D pole `Graph`velikosti podle `MAX` je tedy velikosti `MAX*MAX`. To
 a tedy funkce `readMatrix()` naplní 2D pole `Graph` pouze z části. Konkrétně sub-matici velikosti `pocet*pocet`, kde  `pocet`
 je globální proměná, určující počet vrcholů v grafu. Je automaticky přiřazena funkcí `readMatrix()`, při načítání grafu.
 Pokud by vstupní matice byla 3x3 plná jedniček, pak by 2D pole `Graph` po jejim načtení vypadalo následovně.
-`
+```
 1,1,1,0,0,0,...
 1,1,1,0,0,0,...
 1,1,1,0,0,0,...
@@ -26,5 +26,5 @@ Pokud by vstupní matice byla 3x3 plná jedniček, pak by 2D pole `Graph` po jej
 . . .
 . . .
 . . .
-`
+```
 Pokud předem bylo 2D pole `Graph` plné `0`.
