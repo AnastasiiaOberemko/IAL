@@ -24,7 +24,7 @@ void readMatrix () {
 	char file_name[20];
 	char path[32];
 
-	printf("Zadej nazev souboru: \n");
+	printf("Zadej nazev souboru: 		(ukazkova matice: example01.csv)\n");
 	scanf("%s", file_name);
 	strcpy(path, "input/");
 	strcat(path, file_name);
