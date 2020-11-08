@@ -47,6 +47,8 @@ void readMatrix () {
 			printf("%d \t", Graf[i][j]);
 		}
 		printf("\n");
+
+		pocet = i + 1;						//Nastaví poèet vrcholù. (globalní promìná)
 	}
 	printf("\n\n");
 }
@@ -106,9 +108,6 @@ void printResult () {
 }
 
 int main() {
-
-	//printf("Zadejte pocet vrcholu: ");
-	//scanf("%d", &pocet);
 
 	readMatrix();
 
