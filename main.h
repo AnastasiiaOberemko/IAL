@@ -19,7 +19,7 @@ typedef struct SeznamHran {
 struct SeznamHran seznam, vysledek;
 
 // Definujme dvojrozmerne pole Graf pro nasi matici a promennu int pocet pro pocet vrcholu
-char Graf[MAX][MAX];
+int Graf[MAX][MAX];
 int pocet;
 
 void readMatrix();
