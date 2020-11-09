@@ -69,16 +69,19 @@ void KruskalAlgorithm () {
 	// Nastavime pocet hran v seznamu na nulu
 	seznam.pocet = 0;
 	// Projdeme matici a vyplnime seznam 
-	for (i = 2; i < pocet+1; i++) {
-		for (j = 1; j < i; j++) {
+	for (i = 1; i < pocet-1; i++) {
+		for (j = 0; j < i; j++) {
 			// Protoze chceme vahu hrany jako cislo a ne znak, pouzijeme funkci atoi() coz prevede string do integeru
-			if (atoi(Graf[i][j]) != 0) {
+			if (Graf[i][j] != 0) {
 				seznam.info[seznam.pocet].source = i;
 				seznam.info[seznam.pocet].dest = j;
-				seznam.info[seznam.pocet].weight = atoi(Graf[i][j]);
+				seznam.info[seznam.pocet].weight = Graf[i][j];
 				seznam.pocet++;
 			}
 		}
+	}
+	for (i = 0; i < seznam.pocet; i++) {
+		printf("Hrana: %d - %d: %d\n", seznam.info[i].source, seznam.info[i].dest, seznam.info[i].weight);
 	}
 
 	// sortujeme hrany podle jejich vahy
