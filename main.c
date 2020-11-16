@@ -5,14 +5,14 @@
 
 
 /**
-* Funkce readMatrix naèítá graf, ze zadaného souboru.
-* Soubor je vybrán podle zadaného názvu (i s koncovkou) a jsou hledány v složce `input/`. 
-* Dokáže otevøít .csv i .txt soubory. Jednotlivé položky jsou oddìleny ',' 
-* a jednotlivé øádky jsou denoduše oddìleny '\n' tedy enterem vtext editoru.
+* Funkce readMatrix naï¿½ï¿½tï¿½ graf, ze zadanï¿½ho souboru.
+* Soubor je vybrï¿½n podle zadanï¿½ho nï¿½zvu (i s koncovkou) a jsou hledï¿½ny v sloï¿½ce `input/`. 
+* Dokï¿½e otevï¿½ï¿½t .csv i .txt soubory. Jednotlivï¿½ poloï¿½ky jsou oddï¿½leny ',' 
+* a jednotlivï¿½ ï¿½ï¿½dky jsou denoduï¿½e oddï¿½leny '\n' tedy enterem vtext editoru.
 * 
-* Matice ze soubory je naètena do dvourozmìrného pole `Graf[MAX][MAX]`,
-* kde za pomocí matice sousednosti (adjacency matrix) bude nadále interpretována jako Graf.
-* Jednotlivé hodnoty jsou typu Integer.
+* Matice ze soubory je naï¿½tena do dvourozmï¿½rnï¿½ho pole `Graf[MAX][MAX]`,
+* kde za pomocï¿½ matice sousednosti (adjacency matrix) bude nadï¿½le interpretovï¿½na jako Graf.
+* Jednotlivï¿½ hodnoty jsou typu Integer.
 */
 void readMatrix () {
 	// TODO - v dokumentace bychom meli pridat nejaky koncovy automat na zpracovani vstupu
@@ -29,7 +29,7 @@ void readMatrix () {
 	strcpy(path, "input/");
 	strcat(path, file_name);
 
-	FILE* in = fopen(path, "r");				//Otevøe soubor, jinak ukonèí program s 1.
+	FILE* in = fopen(path, "r");				//Otevï¿½e soubor, jinak ukonï¿½ï¿½ program s 1.
 	if (in == NULL)
 	{
 		perror("\n file opening failed");
@@ -42,13 +42,13 @@ void readMatrix () {
 		record = strtok(line, ",");
 		for (int j = 0; record != NULL; j++)
 		{
-			Graf[i][j] = atoi(record);			//Nahraje danou položku jako Integer.
+			Graf[i][j] = atoi(record);			//Nahraje danou poloï¿½ku jako Integer.
 			record = strtok(NULL, ",");
 			printf("%d \t", Graf[i][j]);
 		}
 		printf("\n");
 
-		pocet = i + 1;						//Nastaví poèet vrcholù. (globalní promìná)
+		pocet = i + 1;						//Nastavï¿½ poï¿½et vrcholï¿½. (globalnï¿½ promï¿½nï¿½)
 	}
 	printf("\n\n");
 }
@@ -69,7 +69,7 @@ void KruskalAlgorithm () {
 	// Nastavime pocet hran v seznamu na nulu
 	seznam.pocet = 0;
 	// Projdeme matici a vyplnime seznam 
-	for (i = 1; i < pocet-1; i++) {
+	for (i = 0; i < pocet; i++) {
 		for (j = 0; j < i; j++) {
 			// Protoze chceme vahu hrany jako cislo a ne znak, pouzijeme funkci atoi() coz prevede string do integeru
 			if (Graf[i][j] != 0) {
