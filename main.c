@@ -53,10 +53,26 @@ void readMatrix () {
 	printf("\n\n");
 }
 
-
+/**
+* Funkce sort seøadí seznam hran.
+* Je použit Bubble-sort jak øadící algoritmus.
+* Øazení je provádìno nad polem info v globální promìné seznam. (seznam.info)
+* 
+* Výstupen funcke je tedy seøazená posloupnost hran podle vah v poly seznam.info, od nejmenší na prvním indexu 
+* až po nevyšší na indexu seznam.pocet, kde maximální velikost je MAX, tedy index MAX-1.
+*/
 void sort() {
-	// TODO
-	// pruchod seznamem a porovnani vahy sousedu -> quick sort 
+	for (int i = 0; i < seznam.pocet; i++)
+	{
+		hrana temp = seznam.info[i];
+		int j = i - 1;
+		while (j >= 0 && temp.weight < seznam.info[j].weight)
+		{
+			seznam.info[j + 1] = seznam.info[j];
+			j--;
+		}
+		seznam.info[j + 1] = temp;
+	}
 }
 
 void spojPodstromy(char vrcholy[], int val1, int val2) {
