@@ -75,8 +75,15 @@ void sort() {
 	}
 }
 
-void spojPodstromy(char vrcholy[], int val1, int val2) {
+void spojPodstromy(int vrcholy[], int val1, int val2) {
 	// v poli vrcholu prepiseme hodnotu koncoveho bodu za pocatecni 
+	int i;
+
+	for (i = 0; i < pocet; i++) {
+		if (vrcholy[i] == val2) {
+			vrcholy[i] = val1;
+		}
+	}
 }
 
 void KruskalAlgorithm () {
@@ -102,21 +109,38 @@ void KruskalAlgorithm () {
 
 	// sortujeme hrany podle jejich vahy
 	sort();
-
+	for (i = 0; i < seznam.pocet; i++) {
+		printf("Serazena hrana: %d - %d: %d\n", seznam.info[i].source, seznam.info[i].dest, seznam.info[i].weight);
+	}
 	// Definujeme pole znaku pro vrcholy
-	char vrcholy[MAX];
+	int vrcholy[MAX];
 	// Definujeme pomocne promenne
 	char hodnota1, hodnota2;
 
 	// Nastavime hodnotu poctu hran vysledneho stromu na 0
 	vysledek.pocet = 0;
 
-	// TODO 
 	// Protoze mame ve vyslednem strome mit pocet hran o jednu min nez pocet vrcholu 
 	// tak do pomocnych promennych hodime hodnoty pocatecniho a koncoveho bodu prvni hrany v sortu 
 	// porovname hodnoty 
 	// pokud jsou stejne tak hranu zahodime
 	// pokud ne tak danou hranu zaradime do vysledneho stromu a spojime podstromy 
+	for (i = 0; i < seznam.pocet; i++) {
+		vrcholy[i] = i;
+	}
+
+	for (i = 0; i < seznam.pocet; i++) {
+		hodnota1 = vrcholy[seznam.info[i].source];
+		hodnota2 = vrcholy[seznam.info[i].dest];
+
+		if (hodnota1 != hodnota2) {
+			vysledek.info[vysledek.pocet] = seznam.info[i];
+			weight += seznam.info[i].weight;
+			vysledek.pocet = vysledek.pocet + 1;
+			spojPodstromy(vrcholy, hodnota1, hodnota2);
+		}
+		// jinak zahodime hranu 
+	}
 	
 }
 
@@ -124,6 +148,11 @@ void printResult () {
 	// TODO
 	// vypiseme vysledek
 	// asi nejak "source - destination = weight" + celkova vaha
+	int i;
+	printf("Minimalni kostra grafu: %d\n", weight);
+	for (i = 0; i < vysledek.pocet; i++) {
+		printf("Vysledni hrana: %d - %d: %d\n", vysledek.info[i].source, vysledek.info[i].dest, vysledek.info[i].weight);
+	}
 }
 
 int main() {

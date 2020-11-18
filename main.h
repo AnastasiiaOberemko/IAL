@@ -18,9 +18,10 @@ typedef struct SeznamHran {
 };
 struct SeznamHran seznam, vysledek;
 
-// Definujme dvojrozmerne pole Graf pro nasi matici a promennu int pocet pro pocet vrcholu
+// Definujme dvojrozmerne pole Graf pro nasi matici, promennu int pocet pro pocet vrcholu a promennu weight pro vahu minimalni kostry grafu
 int Graf[MAX][MAX];
 int pocet;
+int weight;
 
 void readMatrix();
 void sort();
