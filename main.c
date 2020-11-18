@@ -85,7 +85,7 @@ void KruskalAlgorithm () {
 	// Nastavime pocet hran v seznamu na nulu
 	seznam.pocet = 0;
 	// Projdeme matici a vyplnime seznam 
-	for (i = 1; i < pocet-1; i++) {
+	for (i = 1; i < pocet; i++) {
 		for (j = 0; j < i; j++) {
 			// Protoze chceme vahu hrany jako cislo a ne znak, pouzijeme funkci atoi() coz prevede string do integeru
 			if (Graf[i][j] != 0) {
