@@ -4,162 +4,189 @@
 #include "main.h"
 
 
-/**
-* Funkce readMatrix na��t� graf, ze zadan�ho souboru.
-* Soubor je vybr�n podle zadan�ho n�zvu (i s koncovkou) a jsou hled�ny v slo�ce `input/`. 
-* Dok�e otev��t .csv i .txt soubory. Jednotliv� polo�ky jsou odd�leny ',' 
-* a jednotliv� ��dky jsou denodu�e odd�leny '\n' tedy enterem vtext editoru.
-* 
-* Matice ze soubory je na�tena do dvourozm�rn�ho pole `Graf[MAX][MAX]`,
-* kde za pomoc� matice sousednosti (adjacency matrix) bude nad�le interpretov�na jako Graf.
-* Jednotliv� hodnoty jsou typu Integer.
+/* Funkce načítá data ze souboru obsahující matici definující graf.
+** Ukázkové soubory jsou umístěny v adresáři /input a lze je načíst
+** zadáním celého názvu souboru včetně koncovky (.csv).
 */
-void readMatrix () {
-	// TODO - v dokumentace bychom meli pridat nejaky koncovy automat na zpracovani vstupu
-	// Vstupni vrcholy muzou byt bud ocislovane, bud pojmenovane a to male nebo velka pismenka
-	// asi bych tady jeste pridala neco jako "nebo zadejte -h nebo -help pro vice info" a dat ukazkovy vstup
-
+void readMatrix() 
+{
 	char buffer[MAX];
 	char* record, *line;
 	char file_name[20];
 	char path[32];
 
-	printf("Zadej nazev souboru: 		(ukazkova matice: example01.csv)\n");
+	/* Výzva k zadání jména souboru. */
+	printf("\nInsert file name [example01.csv]: ");
 	scanf("%s", file_name);
+	
+	/* Definice proměnné path a vytvoření celé cesty k soboru. */
 	strcpy(path, "input/");
 	strcat(path, file_name);
 
-	FILE* in = fopen(path, "r");				//Otev�e soubor, jinak ukon�� program s 1.
+	/* Otevře soubor s matící a ověří. */
+	FILE* in = fopen(path, "r");
+	/* Pokud došlo k chybě, program tuto skutečnost oznámí uživateli
+	** a ukončí se s kodem 1. */
 	if (in == NULL)
 	{
-		perror("\n file opening failed");
+		perror("\n Error: file opening failed!");
 		exit(1);
 	}
-
-	printf("\n\nNactena matice:\n\n");
+	/* Vykreslí uživateli načtenou matici a uloží ji do proměnné Matrix.
+	** Ta je dvourozměrným polem. */
+	printf("\n\nLoaded matrix from file %s\n\n", file_name);
 	for (int i = 0; (line = fgets(buffer, sizeof(buffer), in)) != NULL; i++)
 	{
 		record = strtok(line, ",");
 		for (int j = 0; record != NULL; j++)
 		{
-			Graf[i][j] = atoi(record);			//Nahraje danou polo�ku jako Integer.
+			/* Do matice jsou ukládána data typu int. Proto je nutné je
+			** přetypovat za pomocí funkce atoi(). */
+			Matrix[i][j] = atoi(record);
 			record = strtok(NULL, ",");
-			printf("%d \t", Graf[i][j]);
+			printf("%d \t", Matrix[i][j]);
 		}
 		printf("\n");
-
-		pocet = i + 1;						//Nastav� po�et vrchol�. (globaln� prom�n�)
+		/* Inkrementuje počet vrcholů o jedna v každém kroku. */
+		numberOfNodes = i + 1;
 	}
 	printf("\n\n");
 }
 
-/**
-* Funkce sort se�ad� seznam hran.
-* Je pou�it Bubble-sort jak �ad�c� algoritmus.
-* �azen� je prov�d�no nad polem info v glob�ln� prom�n� seznam. (seznam.info)
-* 
-* V�stupen funcke je tedy se�azen� posloupnost hran podle vah v poly seznam.info, od nejmen�� na prvn�m indexu 
-* a� po nevy��� na indexu seznam.pocet, kde maxim�ln� velikost je MAX, tedy index MAX-1.
-*/
-void sort() {
-	for (int i = 0; i < seznam.pocet; i++)
-	{
-		hrana temp = seznam.info[i];
-		int j = i - 1;
-		while (j >= 0 && temp.weight < seznam.info[j].weight)
+/* Funkce, která naplní strukturu grafu listem hran a jejich váhami. */
+void fillGraph() {
+	/* Inicializuje počet hran v grafu na nula. */
+	graph.numberOfEdges = 0;
+	/* Prochází zadanou matici. */
+	for(int i = 1; i < numberOfNodes; i++) {
+		for(int j = 0; j < i; j++)
 		{
-			seznam.info[j + 1] = seznam.info[j];
-			j--;
-		}
-		seznam.info[j + 1] = temp;
-	}
-}
-
-void spojPodstromy(int vrcholy[], int val1, int val2) {
-	// v poli vrcholu prepiseme hodnotu koncoveho bodu za pocatecni 
-	int i;
-
-	for (i = 0; i < pocet; i++) {
-		if (vrcholy[i] == val2) {
-			vrcholy[i] = val1;
-		}
-	}
-}
-
-void KruskalAlgorithm () {
-	// Ziskame hrany grafu z matici 
-	int i, j; // definujeme pomocne promenne
-	// Nastavime pocet hran v seznamu na nulu
-	seznam.pocet = 0;
-	// Projdeme matici a vyplnime seznam 
-	for (i = 1; i < pocet; i++) {
-		for (j = 0; j < i; j++) {
-			// Protoze chceme vahu hrany jako cislo a ne znak, pouzijeme funkci atoi() coz prevede string do integeru
-			if (Graf[i][j] != 0) {
-				seznam.info[seznam.pocet].source = i;
-				seznam.info[seznam.pocet].dest = j;
-				seznam.info[seznam.pocet].weight = Graf[i][j];
-				seznam.pocet++;
+			/* Pokud je nalezena hodnota 0, znamená to nalezení diagonály 
+			** v matici a tento krok je přeskočen. */
+			if(Matrix[i][j] != 0)
+			{
+				/* Zde je vytvořena hrana s počátečním uzlem, koncovým
+				** uzlem a váhou udávanou v matici Matrix. */
+				graph.arrOfEdges[graph.numberOfEdges].source = i;
+				graph.arrOfEdges[graph.numberOfEdges].destination = j;
+				graph.arrOfEdges[graph.numberOfEdges].weight = Matrix[i][j];
+				graph.numberOfEdges++;
 			}
 		}
-	}
-	for (i = 0; i < seznam.pocet; i++) {
-		printf("Hrana: %d - %d: %d\n", seznam.info[i].source, seznam.info[i].dest, seznam.info[i].weight);
-	}
+	}	
+}
 
-	// sortujeme hrany podle jejich vahy
-	sort();
-	for (i = 0; i < seznam.pocet; i++) {
-		printf("Serazena hrana: %d - %d: %d\n", seznam.info[i].source, seznam.info[i].dest, seznam.info[i].weight);
-	}
-	// Definujeme pole znaku pro vrcholy
-	int vrcholy[MAX];
-	// Definujeme pomocne promenne
-	char hodnota1, hodnota2;
+/* Funkce, jenž seřadí všechny hrany dle váhy. */
+void sort() 
+{
+	for (int i = 0; i < graph.numberOfEdges; i++)
+	{
+		Edge temporary = graph.arrOfEdges[i];
 
-	// Nastavime hodnotu poctu hran vysledneho stromu na 0
-	vysledek.pocet = 0;
-
-	// Protoze mame ve vyslednem strome mit pocet hran o jednu min nez pocet vrcholu 
-	// tak do pomocnych promennych hodime hodnoty pocatecniho a koncoveho bodu prvni hrany v sortu 
-	// porovname hodnoty 
-	// pokud jsou stejne tak hranu zahodime
-	// pokud ne tak danou hranu zaradime do vysledneho stromu a spojime podstromy 
-	for (i = 0; i < seznam.pocet; i++) {
-		vrcholy[i] = i;
-	}
-
-	for (i = 0; i < seznam.pocet; i++) {
-		hodnota1 = vrcholy[seznam.info[i].source];
-		hodnota2 = vrcholy[seznam.info[i].dest];
-
-		if (hodnota1 != hodnota2) {
-			vysledek.info[vysledek.pocet] = seznam.info[i];
-			weight += seznam.info[i].weight;
-			vysledek.pocet = vysledek.pocet + 1;
-			spojPodstromy(vrcholy, hodnota1, hodnota2);
+		int j = i - 1;
+		while (j >= 0 && temporary.weight < graph.arrOfEdges[j].weight)
+		{
+			graph.arrOfEdges[j + 1] = graph.arrOfEdges[j];
+			j--;
 		}
-		// jinak zahodime hranu 
+		graph.arrOfEdges[j + 1] = temporary;
+	}
+}
+
+/* Funkce, která nalezne číslo skupiny daného uzlu grafu. */
+int find(int groups[], int groupNum) 
+{
+	return(groups[groupNum]);
+}
+
+/* Funkce, jenž najde v poli skupin koncový bod hrany a přiřadí
+** jej do stejné skupiny (podstromu) jako počáteční uzel. */
+void merge(int groups[],int source,int destination)
+{
+	for(int i = 0; i < numberOfNodes; i++) {
+		if(groups[i] == destination) {
+			groups[i] = source;
+		}		
+	}	
+}
+
+/* Funkce zajišťující výpis hran, které náleží minimální kostře
+** grafu a celková cena (cost). */
+void printResult()
+{
+	int cost = 0;
+	
+	printf("\nSource\tDestination\tCost");
+	for(int i = 0; i < result.numberOfEdges; i++)
+	{
+		printf("\n%d\t|\t%d\t|\t%d",result.arrOfEdges[i].source, result.arrOfEdges[i].destination, result.arrOfEdges[i].weight);
+		cost=cost+result.arrOfEdges[i].weight;
+	}
+ 
+	printf("\n\nCombined cost = %d", cost);
+}
+
+/* Funkce tvořící tělo celého algoritmu. */
+void kruskalAlgorithm()
+{
+	readMatrix();
+	fillGraph();
+	sort();
+
+	/* Inicializuje počet hran ve výsledném grafu na nula. */
+	result.numberOfEdges = 0;
+	/* Pole onsahující čísla všech uzlů grafu. */
+	int groups[MAX];
+	/* Inicializace tohoto pole. př. [0,1,2...(numberOfNodes-1)] */
+	for(int i = 0; i < numberOfNodes; i++){
+		groups[i] = i;
 	}
 	
-}
-
-void printResult () {
-	// TODO
-	// vypiseme vysledek
-	// asi nejak "source - destination = weight" + celkova vaha
-	int i;
-	printf("Minimalni kostra grafu: %d\n", weight);
-	for (i = 0; i < vysledek.pocet; i++) {
-		printf("Vysledni hrana: %d - %d: %d\n", vysledek.info[i].source, vysledek.info[i].dest, vysledek.info[i].weight);
+	/* Cyklus procházející všechny hrany v grafu. */
+	for(int i = 0; i < graph.numberOfEdges; i++)
+	{
+		/* Najdeme, zda-li koncový, nebo počáteční uzel již náleží
+		** nějaké skupině uzlů. (podstromu) */
+		int source = find(groups, graph.arrOfEdges[i].source);
+		int destination = find(groups, graph.arrOfEdges[i].destination);
+		
+		/* Pokud nenáleží stejné skupině. (podstromu) */
+		if(source != destination)
+		{
+			/* Je tato hrana zapsána do výsledného grafu (min. kostry),
+			** zvýšen počet hran ve výsledném grafu o jedna a připojen
+			** počáteční a koncový uzel do jedné skupiny. */
+			result.arrOfEdges[result.numberOfEdges] = graph.arrOfEdges[i];
+			result.numberOfEdges = result.numberOfEdges + 1;
+			merge(groups, source, destination);
+		}
 	}
+	/* Je zavolána funkce pro výpis výsledků. */
+	printResult();
 }
 
-int main() {
+void printLogo() 
+{
+	printf("##    ## ########  ##     ##  ######  ##    ##    ###    ##       ####  ######  \n");
+	printf("##   ##  ##     ## ##     ## ##    ## ##   ##    ## ##   ##       #### ##    ## \n");
+	printf("##  ##   ##     ## ##     ## ##       ##  ##    ##   ##  ##        ##  ##       \n");
+	printf("#####    ########  ##     ##  ######  #####    ##     ## ##       ##    ######  \n");
+	printf("##  ##   ##   ##   ##     ##       ## ##  ##   ######### ##                  ## \n");
+	printf("##   ##  ##    ##  ##     ## ##    ## ##   ##  ##     ## ##            ##    ## \n");
+	printf("##    ## ##     ##  #######   ######  ##    ## ##     ## ########       ######  \n");
+	printf("\n");
+	printf("   ###    ##        ######    #######  ########  #### ######## ##     ## \n");
+	printf("  ## ##   ##       ##    ##  ##     ## ##     ##  ##     ##    ###   ### \n");
+	printf(" ##   ##  ##       ##        ##     ## ##     ##  ##     ##    #### #### \n");
+	printf("##     ## ##       ##   #### ##     ## ########   ##     ##    ## ### ## \n");
+	printf("######### ##       ##    ##  ##     ## ##   ##    ##     ##    ##     ## \n");
+	printf("##     ## ##       ##    ##  ##     ## ##    ##   ##     ##    ##     ## \n");
+	printf("##     ## ########  ######    #######  ##     ## ####    ##    ##     ## \n");
+}
 
-	readMatrix();
-
-	KruskalAlgorithm();
-
-	printResult();
+int main() 
+{
+	printLogo();
+	kruskalAlgorithm();
+	return 0;
 }

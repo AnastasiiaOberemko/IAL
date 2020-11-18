@@ -1,30 +1,24 @@
 #define MAX 50
 
-// Definujeme strukturu hrana typu Hrana
-// int source - promenna pro pocatecni bod hrany
-// int dest - promenna pro koncovy bod hrany
-// int weight - promenna pro vahu hrany
-typedef struct Hrana {
-	int source, dest, weight;
-} hrana;
+/* Definována struktura hrana (Edge). Její vlastnosti jsou
+** čísla zdrojového (source), koncového (destination) uzlu
+** a váha (weight) jejich spojení. */
+typedef struct Edge {
+	int source, destination, weight;
+} Edge;
 
-// Definujeme struktury seznam a vysledek typu SeznamHran
-// Struktura se sklada z poctu hran a pole informace o hranach
-// Seznam - mnozina obsahujici vsechny hrany grafu
-// Vysledek - mnozina stromu, kde kazdy uzel je samostatnym podstromem
-typedef struct SeznamHran {
-	hrana info[MAX];
-	int pocet;
-};
-struct SeznamHran seznam, vysledek;
+/* Definována struktura graf (Graph), je množinou všech hran
+** (arrOfEdges) a udržuje informaci o jejich počtu (numberOfEdges). */
+typedef struct Graph {
+	Edge arrOfEdges[MAX];
+	int numberOfEdges;
+} Graph;
 
-// Definujme dvojrozmerne pole Graf pro nasi matici, promennu int pocet pro pocet vrcholu a promennu weight pro vahu minimalni kostry grafu
-int Graf[MAX][MAX];
-int pocet;
-int weight;
-
-void readMatrix();
-void sort();
-void KruskalAlgorithm();
-void printResult();
-void spojPodsromy(char vrcholy[], int val1, int val2);
+/* Definováno dvojrozměrné pole Matrix do něhož vstupuje matice 
+** definující graf. Dále definujeme proměnnou která udržuje 
+** informace o počtu uzlů (numberOfNodes) a jak zadaný, tak 
+** výsledný graf. */
+int Matrix[MAX][MAX];
+int numberOfNodes;
+Graph graph;
+Graph result;
